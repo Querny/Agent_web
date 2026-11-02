@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#06080f" />
+<title>Обсерватория «Тихая» — небо, которое не повторяется</title>
+<meta name="description" content="Маленькая обсерватория в двадцати минутах от Барнаула: ночные экскурсии, живая карта неба и лаборатория, где можно собрать своё созвездие." />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306080f'/%3E%3Cpath d='M16 5.5l2.7 7.8 7.8 2.7-7.8 2.7L16 26.5l-2.7-7.8L5.5 16l7.8-2.7z' fill='%23e8c39a'/%3E%3C/svg%3E" />
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержанию</a>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Обсерватория Тихая, на главную">
+    <svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+      <circle cx="13" cy="13" r="11.2" stroke="currentColor" stroke-opacity=".4" />
+      <path d="M13 4.6l1.7 6.7 6.7 1.7-6.7 1.7-1.7 6.7-1.7-6.7L4.6 13l6.7-1.7z" fill="currentColor" />
+    </svg>
+    <span class="brand-word">Тихая</span>
+  </a>
+
+  <nav class="nav-links" aria-label="Основная навигация">
+    <a href="#today">Сегодня</a>
+    <a href="#lab">Лаборатория</a>
+    <a href="#about">О месте</a>
+  </nav>
+
+  <a class="nav-cta" href="#visit">Записаться <span aria-hidden="true">↗</span></a>
+</header>
+
+<main id="main">
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="hero" id="top">
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 560 560" fill="none">
+        <circle cx="280" cy="280" r="268" stroke="rgba(255,255,255,.07)" />
+        <circle cx="280" cy="280" r="206" stroke="rgba(232,195,154,.16)" stroke-dasharray="2 10" />
+        <circle cx="280" cy="280" r="140" stroke="rgba(255,255,255,.06)" />
+        <circle cx="280" cy="280" r="3.4" fill="rgba(232,195,154,.85)" />
+        <circle cx="486" cy="280" r="4.6" fill="rgba(243,238,228,.9)" />
+        <circle cx="280" cy="74" r="2.2" fill="rgba(134,217,200,.75)" />
+        <circle cx="154" cy="398" r="2.6" fill="rgba(169,155,245,.7)" />
+        <path d="M154 398L280 280" stroke="rgba(255,255,255,.05)" stroke-dasharray="1 8" />
+      </svg>
+    </div>
+
+    <div class="wrap hero-inner">
+      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>Обсерватория «Тихая» · Алтай</p>
+
+      <h1 class="hero-title">
+        Небо,<br />которое<br /><em>не повторяется</em>
+      </h1>
+
+      <p class="lead hero-lead">
+        Двадцать минут от Барнаула, восемь километров без фонарей и купол,
+        который открывают вручную. Мы показываем звёзды тем, кто забыл
+        поднять голову.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#lab">Собрать своё созвездие</a>
+        <a class="btn btn-ghost" href="#today">Что видно сегодня</a>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Широта</dt><dd>53°21′ N</dd></div>
+        <div><dt>Городские огни</dt><dd>0 в радиусе 8 км</dd></div>
+        <div><dt>Звёзд над горизонтом</dt><dd>≈ 2 500</dd></div>
+      </dl>
+    </div>
+
+    <a class="cue" href="#today">
+      <span class="cue-line" aria-hidden="true"></span>
+      Листайте вниз
+    </a>
+  </section>
+
+  <!-- ─── Сегодня ──────────────────────────────────────────── -->
+  <section class="section" id="today" aria-labelledby="today-title">
+    <div class="wrap">
+      <header class="head reveal">
+        <p class="kicker">Сегодня в небе</p>
+        <h2 id="today-title">Расчёты <em>настоящие</em></h2>
+        <p class="head-note">
+          Время, фаза Луны и окно темноты считаются прямо в браузере для точки
+          с координатами 53,35° N · 83,78° E. Всё остальное на этом сайте —
+          выдумка, но очень старательная.
+        </p>
+      </header>
+
+      <div class="cards">
+        <article class="card reveal" style="--d:.02s">
+          <h3>Местное время</h3>
+          <p class="clock" id="clock">--:--:--</p>
+          <p class="card-note">Барнаул · UTC+7 · <span id="todayDate">—</span></p>
+        </article>
+
+        <article class="card reveal" style="--d:.08s">
+          <h3>Луна</h3>
+          <div class="moon-row">
+            <canvas id="moon" width="176" height="176" aria-hidden="true"></canvas>
+            <div>
+              <p class="moon-phase" id="moonPhase">—</p>
+              <p class="moon-illum" id="moonIllum">—</p>
+            </div>
+          </div>
+          <p class="card-note" id="moonNote">—</p>
+        </article>
+
+        <article class="card reveal" style="--d:.14s">
+          <h3>Тихое окно</h3>
+          <p class="window" id="darkWindow">—</p>
+          <div class="bars" id="darkBars" aria-hidden="true"></div>
+          <p class="card-note" id="sunNote">—</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Лаборатория ──────────────────────────────────────── -->
+  <section class="section lab" id="lab" aria-labelledby="lab-title">
+    <div class="wrap">
+      <header class="head reveal">
+        <p class="kicker">Лаборатория</p>
+        <h2 id="lab-title">Соберите <em>своё</em> созвездие</h2>
+        <p class="head-note">
+          Кликните по небу — появится звезда. Тяните звёзды, чтобы поправить
+          рисунок. Дайте название и сохраните: созвездие останется в вашем
+          браузере, даже если закрыть вкладку.
+        </p>
+      </header>
+
+      <div class="lab-panel reveal">
+        <div class="skybox">
+          <canvas id="labCanvas" tabindex="0" role="img"
+                  aria-label="Пустое ночное небо. Кликните по нему, чтобы поставить звезду, и соедините несколько звёзд в созвездие."></canvas>
+          <div class="skybox-hint" id="skyHint">Клик — звезда · Тяните — поправить</div>
+          <div class="skybox-meta">
+            <span id="starCount" aria-live="polite">0 звёзд</span>
+            <span id="labStatus" class="status" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <form class="lab-form" id="labForm" novalidate>
+          <label class="field">
+            <span class="field-label">Название созвездия</span>
+            <input id="constName" name="name" type="text" maxlength="40"
+                   placeholder="Тихая Чаша" autocomplete="off" />
+          </label>
+
+          <div class="lab-actions">
+            <button class="btn btn-primary" type="submit" id="saveBtn" disabled>Сохранить</button>
+            <button class="btn btn-ghost" type="button" id="randomBtn">Случайно</button>
+            <button class="btn btn-ghost" type="button" id="clearBtn">Очистить</button>
+          </div>
+
+          <p class="form-hint">
+            Минимум две звезды. Если название не придёт в голову — оставьте
+            поле пустым, мы подпишем сами.
+          </p>
+        </form>
+      </div>
+
+      <div class="shelf reveal">
+        <div class="shelf-head">
+          <h3>Ваш атлас</h3>
+          <span class="shelf-count" id="shelfCount"></span>
+        </div>
+        <ul class="shelf-list" id="shelfList"></ul>
+        <p class="shelf-empty" id="shelfEmpty">Пока пусто. Первое созвездие ждёт вас на небе выше.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── О месте ──────────────────────────────────────────── -->
+  <section class="section" id="about" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div class="about-intro reveal">
+        <p class="kicker">О месте</p>
+        <h2 id="about-title">Восемь километров<br /><em>без света</em></h2>
+        <p class="lead">
+          «Тихая» — это частная обсерватория на старой полевой дороге, между
+          сосновым бором и рекой. Здесь нет ни вывески, ни парковки: только
+          купол, два телескопа и правило выключать телефоны у входа.
+        </p>
+        <p class="muted">
+          Мы принимаем небольшие группы, чтобы у каждого было время посмотреть
+          в окуляр молча. Зимой — с пледом и чаем, летом — до первых птиц.
+        </p>
+      </div>
+
+      <ul class="programs reveal" style="--d:.1s">
+        <li>
+          <div class="prog-top"><h3>Ночная экскурсия</h3><span class="price">1 200 ₽</span></div>
+          <p>Купол, два телескопа, рассказ про то, как ориентироваться без телефона.</p>
+          <span class="meta">2 часа · до 12 человек</span>
+        </li>
+        <li>
+          <div class="prog-top"><h3>Свидание с Луной</h3><span class="price">2 400 ₽</span></div>
+          <p>Только вы, термос и кратер Коперник. Без группы и без спешки.</p>
+          <span class="meta">1 час · вдвоём</span>
+        </li>
+        <li>
+          <div class="prog-top"><h3>Тихая ночь</h3><span class="price">4 000 ₽</span></div>
+          <p>С заката и до рассвета: объекты глубокого космоса и медленный кофе.</p>
+          <span class="meta">до рассвета · до 4 человек</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── Визит ────────────────────────────────────────────── -->
+  <section class="section visit" id="visit">
+    <div class="wrap">
+      <div class="cta reveal">
+        <div>
+          <p class="kicker">Визит</p>
+          <h2>Ближайшее открытое небо — <em>в пятницу</em></h2>
+          <p class="muted">Собираемся за час до заката. Если облака не разойдутся, позвоним и перенесём — деньги остаются у вас.</p>
+        </div>
+        <a class="btn btn-primary" href="mailto:hello@tihaya.space?subject=Визит%20в%20обсерваторию">Забронировать место</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <p class="brand-word">Тихая</p>
+      <p class="muted small">Обсерватория на краю Барнаула.<br />Демонстрационный проект, вымышленный.</p>
+      <p class="small muted footer-year" id="year"></p>
+    </div>
+    <nav class="footer-nav" aria-label="Подвал">
+      <a href="#today">Сегодня</a>
+      <a href="#lab">Лаборатория</a>
+      <a href="#about">О месте</a>
+      <a href="#visit">Визит</a>
+    </nav>
+    <p class="footer-note small muted">
+      Сайт собран вручную: HTML, CSS и чистый JavaScript.<br />
+      Без библиотек, без аналитики, без запросов наружу.
+    </p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
